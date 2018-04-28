@@ -1,0 +1,73 @@
+# reduce learning rate after 120 epochs (60000 iters) by factor 0f 10
+# then another factor of 10 after 10 more epochs (5000 iters)
+
+# The train/test net protocol buffer definition
+# net: "models/cifar10_full_train_test.prototxt"
+net: "/opt/work/cvgrow/CLR/models/cifar10_full_train_test.prototxt"
+# test_iter specifies how many forward passes the test should carry out.
+# In the case of CIFAR10, we have test batch size 100 and 100 test iterations,
+# covering the full 10,000 testing images.
+test_iter: 100
+# Carry out testing every 1000 training iterations.
+test_interval: 999999999
+
+# The base learning rate, momentum and the weight decay of the network.
+#======================================
+#base_lr: 0.001
+#momentum: 0.9
+#weight_decay: 0.004
+#======================================
+
+#======================================
+# The learning rate policy
+#lr_policy: "fixed"
+#======================================
+
+#======================================
+#
+# 一次错误的CLR stage1尝试。应当使用triangular策略
+#
+#lr_policy: "exp"
+#base_lr: 0.001
+# 1.0001 略慢
+#gamma: 1.001
+#======================================
+
+lr_policy: "triangular"
+base_lr: 0
+max_lr: 0.02
+
+# 1 epoch
+stepsize: 500  # 4 epoch
+max_iter: 500
+
+# 2 epoch
+#stepsize: 1000  # 4 epoch
+#max_iter: 1000
+
+# 4 epoch
+#stepsize: 2000  # 4 epoch
+#max_iter: 2000
+
+# 8 epoch
+#stepsize: 4000
+#max_iter: 4000
+
+
+#======================================
+#lr_policy: "triangular2"
+#start_lr_policy: 0
+#stepsize: 2000
+#======================================
+
+# Display every 200 iterations
+display: 200
+# The maximum number of iterations
+#max_iter: 70000
+# snapshot intermediate results
+snapshot: 10000
+#snapshot_format: HDF5
+snapshot_prefix: "output/cifar10_full"
+# solver mode: CPU or GPU
+solver_mode: GPU
+test_initialization: 0
